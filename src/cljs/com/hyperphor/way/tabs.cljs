@@ -1,5 +1,6 @@
 (ns com.hyperphor.way.tabs
   (:require [re-frame.core :as rf]
+            [com.hyperphor.way.nav :as nav]
             [com.hyperphor.way.cutils :as cu]
    ))
 
@@ -24,6 +25,24 @@
          (if name
            [:a.nav-link {:class (when (= name active) "active")
                          :on-click #(rf/dispatch [:choose-tab id name])}
+            (cu/humanize name)]
+           [:a.nav-link.disabled.vtitle view])])]
+     (when active
+       ((tabs active)))]))
+
+(defn tabs-nav
+  "Define a set of tabs. id is a keyword, tabs is a map (array-map is best to preserve order) mapping keywords to ui fns "
+  [id tabs base-route]
+  (let [route  @(rf/subscribe [:route])
+        active (first route)]      ;TODO use base-route
+    [:div
+     [:ul.nav.nav-tabs
+      (for [[name view] tabs]
+        ^{:key name}
+        [:li.nav-item
+         (if name
+           [:a.nav-link {:class (when (= name active) "active")
+                         :on-click #(rf/dispatch [:set-route (conj base-route name)])}
             (cu/humanize name)]
            [:a.nav-link.disabled.vtitle view])])]
      (when active

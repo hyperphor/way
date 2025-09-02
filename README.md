@@ -44,6 +44,11 @@ See [Demo repo](https://github.com/mtravers/way-demo)
 
 ## Deploy
 
+### locally
+lein install
+
+### publically
+
 lein deploy clojars
 using Hyperphor token
 

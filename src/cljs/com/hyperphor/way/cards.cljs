@@ -4,6 +4,7 @@
    ))
 
 ;;; Based on way/tabs (but logic is different) and should go back there
+
 ;;; manages any kind of carded ui, or top level pages
 
 (defn cards
@@ -19,23 +20,24 @@
     [:div
      (for [{:keys [name view header-extra]} cards]
        ^{:key name}
-       [:div.card
-        [:div.card-header
-         [:h2.mb-0
-          [:button.btn.btn-link {:type "button"
-                                 :on-click #(rf/dispatch [:toggle-card id name])
-                                 :style {:text-decoration "none"} ;TODO CSS
-                                 :aria-expanded "true"
-                                 :aria-controls "compacted"}
-           name]
-          ;; Having this stuff with :h2 is weird, but works mostly
-          header-extra]]
-        [:div {:aria-labelledby "compacted-head"
-               :class "show" #_ (if (open? name) "show" nil)
-               :id id}
-         (when (open? name)
-           [:div.card-body
-            [view]])]])]))
+       (when name                       ;Ignore null elements, makes conditionalizing easier
+         [:div.card
+          [:div.card-header
+           [:h2.mb-0
+            [:button.btn.btn-link {:type "button"
+                                   :on-click #(rf/dispatch [:toggle-card id name])
+                                   :style {:text-decoration "none"} ;TODO CSS
+                                   :aria-expanded "true"
+                                   :aria-controls "compacted"}
+             name]
+            ;; Having this stuff within :h2 is weird, but works mostly
+            header-extra]]
+          [:div {:aria-labelledby "compacted-head"
+                 :class "show" #_ (if (open? name) "show" nil)
+                 :id id}
+           (when (open? name)
+             [:div.card-body
+              [view]])]]))]))
 
 (rf/reg-sub
  :cards
@@ -44,7 +46,7 @@
        default
        )))
 
-;;; → multitool
+;;; TODO in multitool as set-toggle
 (defn toggle-elt
   [cardset card]
   (if cardset
@@ -62,4 +64,14 @@
  :set-cards
  (fn [db [_ id card-set]]
    (assoc-in db [:cards id] card-set)))
+
+;;; → multiool I guess
+(defn sconj
+  [s elt]
+  (conj (or s #{}) elt))
+
+(rf/reg-event-db
+ :open-card
+ (fn [db [_ id card]]
+   (update-in db [:cards id] sconj card)))
 
