@@ -11,6 +11,7 @@
         "@blocknote/core": "^0.31.0",
         "@blocknote/mantine": "^0.31.0",
         "@blocknote/react": "^0.31.0",
+        "@mui/material": "^7.1.2",
         "ag-grid-community": "^31.3.4",
         "ag-grid-enterprise": "^31.3.4",
         "ag-grid-react": "^31.3.4",

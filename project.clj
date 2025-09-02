@@ -36,6 +36,8 @@
                  [re-frame "1.4.3"]
                  [com.cemerick/url "0.1.1"]
                  [cljs-ajax "0.8.4"]
+                 [secretary/secretary "1.2.3"] ;TODO perhaps not necessary
+                 [venantius/accountant "0.2.5"]
                  ]
   :source-paths ["src/cljc" "src/clj" "src/cljs"]
   :test-paths ["test/cljc" "test/clj" "test/cljs"] 

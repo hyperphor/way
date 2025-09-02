@@ -3,7 +3,7 @@
             [org.candelbio.multitool.core :as u]
             [clojure.string :as str]
             [com.hyperphor.way.web-utils :as wu]
-            [org.parkerici.okc.frontend.way.material :as m]
+            [com.hyperphor.way.material :as m]
             ))
 
 ;;; Status: carved out of traverse.ops, not yet integrated
@@ -133,6 +133,26 @@
   ((if in? conj disj)
    (or s #{})
    elt))
+
+;;; TODO simple slider
+
+(defmethod form-field :slider
+  [{:keys [type path label id hidden? disabled? value-fn style min max] :as args :or {value-fn identity width "100%"}}]
+  [m/stack-adapter {:direction "row" :spacing 2 :sx {:align-items "center"}}
+   [:span min]
+   [m/slider-adapter
+    {:id id
+     :marks [{:value min :label ""}]
+     :valueLabelDisplay "on"            ;or "auto"  TODO css so these are inline
+     :style style #_ (assoc style :width "500px")
+     :min min :max max
+     :value (or @(rf/subscribe [:form-field-value path]) min) ;???
+                                        ;    :disabled false
+     :on-change (fn [_ v]
+                  (rf/dispatch
+                   [:set-form-field-value path (js->clj v)]))
+     }]
+   [:span max]])
 
 (defmethod form-field :range
   [{:keys [type path label id hidden? disabled? value-fn style min max] :as args :or {value-fn identity width "100%"}}]
@@ -297,7 +317,7 @@
     :method "POST"}
    #_ (when doc                            ;TODO
         [:div.alert doc])
-   (doall (map form-field-row fields))
+   (doall (map #(form-field-row % form-params) fields))
    (when action
      [:button.btn.btn-primary {:type "submit" :on-click #(rf/dispatch [:wform-submit action fields] )} action-label])])
 
