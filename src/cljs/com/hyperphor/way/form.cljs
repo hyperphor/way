@@ -83,7 +83,6 @@
       :value value
       ;;    :disabled false
       :on-change (fn [e]
-                   (prn :foo (-> e .-target .-value) (value-fn (-> e .-target .-value)))
                    (rf/dispatch
                     [:set-form-field-value path (value-fn (-> e .-target .-value))]))
       ;; TODO

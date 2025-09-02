@@ -38,31 +38,14 @@ The code to generate clustered heatmaps is actually pretty simple, and lives in 
 
 A [simple example](src/cljs/hyperphor/way/demo/heatmap.cljs#L167) of use.
 
-## Development
+## Demo
 
-To run locally:
+See [Demo repo](https://github.com/mtravers/way-demo)
 
-### Install
-
-- Java
-- NodeJS
-- Leiningen
-    
-### Run Demo
-
-    npm install
-    lein shadow compile app
-    lein run <port>
-
-### Deploy
+## Deploy
 
 lein deploy clojars
 using Hyperphor token
-
-### Notes
-
-The demo app is included in Way itself, for my personal convenience. This is a bit iffy and probably should be undone at some point.
-
 
 ## License
 
