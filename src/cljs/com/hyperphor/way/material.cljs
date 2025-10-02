@@ -1,8 +1,6 @@
 (ns com.hyperphor.way.material
   (:require [re-frame.core :as rf]
-            [org.candelbio.multitool.core :as u]
             [reagent.core :as reagent]
-            [reagent.dom]
             ["@mui/material" :as m]
            )
   )

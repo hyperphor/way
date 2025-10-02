@@ -6,10 +6,9 @@
             [com.hyperphor.way.material :as m]
             ))
 
-;;; Status: carved out of traverse.ops, not yet integrated
 ;;; TODO param stuff should go through here. Or do we need both levels of abstraction?
 ;;; TODO way to supply extras or customizations
-;;; TODO should probably incorporate component library like https://mantine.dev/
+;;; TODO incorporate more material components (date picker, etc)
 ;;; TODO password field
 
 (rf/reg-sub

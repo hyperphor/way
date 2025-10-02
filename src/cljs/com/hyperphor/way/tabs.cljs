@@ -31,10 +31,11 @@
        ((tabs active)))]))
 
 (defn tabs-nav
-  "Define a set of tabs. id is a keyword, tabs is a map (array-map is best to preserve order) mapping keywords to ui fns "
+  "Define a set of tabs. id is a keyword, tabs is a map (array-map is best to preserve order) mapping keywords to ui fns. Uses :set-route so URL updates."
   [id tabs base-route]
-  (let [route  @(rf/subscribe [:route])
-        active (first route)]      ;TODO use base-route
+  (let [route @(rf/subscribe [:route])
+        active (or (first route)
+                   (ffirst tabs))]      ;TODO use base-route
     [:div
      [:ul.nav.nav-tabs
       (for [[name view] tabs]
