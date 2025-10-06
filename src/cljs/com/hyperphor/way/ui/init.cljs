@@ -12,7 +12,7 @@
  :initialize-db
  (fn [_ _]
    {:app (config/config :app-title)
-    :route {:handler :home}             ;TODO router not in Way yet, but Traverse uses this
+    :route [:home]                      ;TODO should be configurable
     }))
 
 (def root-ui (atom nil))
@@ -33,9 +33,10 @@
   [app-ui inits]
   (reset! root-ui app-ui)
   (config/init
-   #(let [params (browser/url-params)]
+   #(let [path (browser/browser-pathname)]
       (rf/dispatch-sync [:initialize-db])
-      #_ (nav/start!)
+      (when (> (count path) 1)          ;if / , don't navigate
+        (rf/dispatch-sync [:set-path path]))
       (when inits (inits))
       (mount-root)
       )))

@@ -50,7 +50,6 @@
    "text/html"))
 
 (defroutes base-site-routes
-  (GET "/" [] (spa))                    ;index handled by spa
   (GET "/health" []                     ;TODO exclude from log, see /opt/mt/repos/dotfiles/.m2/repository/ring-logger/ring-logger/1.1.1/logger.clj
     (response/content-type
      {:status 200
@@ -61,7 +60,7 @@
     (let [original-page (get-in req [:cookies "way_landing" :value])] ;TODO
       (response/redirect (if (empty? original-page) "/" original-page))))
   (GET "/admin" req (admin/view req))
-  #_ (GET "*" [] (spa))                    ;default is handled by spa
+  (GET "/*" [] (spa))                    ;index handled by spa
   (route/not-found "Not found")
   )
 

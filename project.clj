@@ -1,4 +1,4 @@
-(defproject com.hyperphor/way "0.1.18" 
+(defproject com.hyperphor/way "0.1.19" 
   :description "Way"
   :license {:name "EPL-2.0"
             :url "https://www.eclipse.org/legal/epl-2.0/"}
@@ -31,12 +31,13 @@
 
                  ;; frontend
                  ;; See packge.json for the real dependencies
-                 #_ [org.clojure/clojurescript "1.11.132"] ;causes shadow-cljs error, who knows
                  [thheller/shadow-cljs "3.1.4"] ;TODO maybe only in dev profile
                  [reagent "1.2.0"]
                  [re-frame "1.4.3"]
                  [com.cemerick/url "0.1.1"]
                  [cljs-ajax "0.8.4"]
+                 [secretary/secretary "1.2.3"] ;TODO perhaps not necessary
+                 [venantius/accountant "0.2.5"]
                  ]
   :source-paths ["src/cljc" "src/clj" "src/cljs"]
   :test-paths ["test/cljc" "test/clj" "test/cljs"] 
@@ -51,16 +52,6 @@
                                   [day8.re-frame/re-frame-10x "1.9.9"]]}}
 
   :shadow-cljs {:lein true
-                :builds
-                {:app {:target :browser
-                       :compiler-options {:infer-externs true}
-                       :output-dir "resources/public/cljs-out"
-                       :asset-path "/cljs-out"         ;webserver path
-                       ;; :modules {:dev-main {:entries [com.hyperphor.way.demo.app]}}
-                       :devtools {:preloads [day8.re-frame-10x.preload.react-18]}
-                       :dev {:compiler-options
-                             {:closure-defines
-                              {re-frame.trace.trace-enabled?        true
-                               day8.re-frame-10x.show-panel         false ;does not work, afaict
-                               day8.re-frame.tracing.trace-enabled? true}}}}}}
+                ;; No builds, see way-demo 
+                }
   )
