@@ -40,7 +40,7 @@ A [simple example](src/cljs/hyperphor/way/demo/heatmap.cljs#L167) of use.
 
 ## Demo
 
-See [Demo repo](https://github.com/mtravers/way-demo)
+See [Demo repo](https://github.com/hyperphor/way-demo)
 
 ## Deploy
 
@@ -54,7 +54,7 @@ using Hyperphor token
 
 ## License
 
-Copyright © 2020-24 Hyperphor
+Copyright © 2020-25 Hyperphor
 
 This program and the accompanying materials are made available under the
 terms of the Eclipse Public License 2.0 which is available at

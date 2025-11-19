@@ -6,7 +6,7 @@
             [ring.middleware.basic-authentication :refer [wrap-basic-authentication]]
             [org.candelbio.multitool.core :as u]
             [org.candelbio.multitool.cljcore :as ju]
-            [com.hyperphor.way.oauth :as oauth]
+            #_ [com.hyperphor.way.oauth :as oauth]
             [com.hyperphor.way.views.html :as html]
             [com.hyperphor.way.views.admin :as admin]
             [com.hyperphor.way.views.login :as login]
@@ -134,7 +134,7 @@
   (-> (routes app-site-routes base-site-routes)
       (wrap-restful-response)
 
-      (oauth/wrap-oauth)
+      #_ (oauth/wrap-oauth)
 
       ;; TODO isn't this redundant with middleware-site-defaults?
       (resource/wrap-resource "public" {:allow-symlinks? true}) ;allow symlinks in static dir
@@ -202,7 +202,7 @@
 (defn wrap-basic-authentication-except
   [base]
   (fn [request]
-    (if (oauth/open-uri? (:uri request))
+    (if false #_ (oauth/open-uri? (:uri request))
       (base request)
       ((wrap-basic-authentication base authenticated?) request))))
 

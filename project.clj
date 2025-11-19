@@ -1,4 +1,4 @@
-(defproject com.hyperphor/way "0.1.19" 
+(defproject com.hyperphor/way "0.1.20" 
   :description "Way"
   :license {:name "EPL-2.0"
             :url "https://www.eclipse.org/legal/epl-2.0/"}
@@ -12,7 +12,9 @@
                  [aero "1.1.6"]
 
                  ;; Backend
-                 [clj-http "3.13.0" :exclusions [commons-io]]
+                 #_ [clj-http "3.13.0" :exclusions [commons-io]] ; only used for oauth, hato is better
+                 [me.raynes/fs "1.4.6"]
+
                  [compojure "1.7.1"]
                  [ring "1.14.1"]
                  [ring/ring-core "1.14.1"]
@@ -21,7 +23,7 @@
                  [ring-basic-authentication "1.2.0"]
                  [ring-logger "1.1.1"]
                  [ring-middleware-format "0.7.5" :exclusions [javax.xml.bind/jaxb-api]]
-                 [ring-oauth2 "0.3.0"]  ;TODO upgraded version, need to verify it works
+                 #_ [ring-oauth2 "0.3.0"]  ;TODO upgraded version, need to verify it works
                  [ring/ring-codec "1.3.0"]
 
                  ;; Data

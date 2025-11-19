@@ -1,6 +1,8 @@
 (ns com.hyperphor.way.ui.config
   (:require [com.hyperphor.way.api :as api]))
 
+;;; TODO why is this in .ui ?
+
 (def the-config (atom nil))
 
 (defn init
