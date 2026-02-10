@@ -60,6 +60,7 @@
     (let [original-page (get-in req [:cookies "way_landing" :value])] ;TODO
       (response/redirect (if (empty? original-page) "/" original-page))))
   (GET "/admin" req (admin/view req))
+  ;; TODO not sure this is good, it means any resouce url that isn't there returns the web page rather than a 404
   (GET "/*" [] (spa))                    ;index handled by spa
   (route/not-found "Not found")
   )
@@ -166,6 +167,13 @@
       (assoc-in [:session :cookie-attrs] {:http-only true, :same-site :lax})
       (assoc-in [:session :store] common-store)))
 
+;;; TODO from nlflame but needs to be generlaized better.
+(defmulti exec (fn [id query] id))
+
+(defmethod exec :default
+  [id query]
+  (throw (ex-info "No handler" {:id id  :query query})))
+
 ;;; TODO should be in .cljc, should be parameterizable
 (def api-base "/api")
 
@@ -175,6 +183,10 @@
       (content-response (config/config)))
     (GET "/data" req                    ;params include data-id and other
       (content-response (data/data (:params req))))
+    (GET "/exec" [id query]
+      (content-response
+       (exec (keyword id) query)))
+
     #_                                  ;TODO dev-mode only
     (GET "/error" req                   ;For testing error reporting
       (content-response (/ 0 0)))
