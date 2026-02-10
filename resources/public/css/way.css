@@ -107,3 +107,37 @@ tr {
   color: #666;
   
 }
+
+/* All from draggable https://github.com/react-grid-layout/react-draggable/blob/master/example/index.html#L60 */
+
+.react-draggable, .cursor {
+  cursor: move;
+  display: block;
+}
+.no-cursor {
+  cursor: auto;
+}
+.cursor-y {
+  cursor: ns-resize;
+}
+.cursor-x {
+  cursor: ew-resize;
+}
+
+.box {
+  background: #fff;
+  border: 1px solid #999;
+  border-radius: 3px;
+  width: 180px;
+  height: 180px;
+  margin: 10px;
+  padding: 10px;
+  float: left;
+}
+.no-pointer-events {
+  pointer-events: none;
+}
+.hovered {
+  background-color: gray;
+}
+

@@ -1,10 +1,10 @@
-(defproject com.hyperphor/way "0.1.20" 
+(defproject com.hyperphor/way "0.1.21" 
   :description "Way"
   :license {:name "EPL-2.0"
             :url "https://www.eclipse.org/legal/epl-2.0/"}
   :deploy-repositories [["clojars" {:sign-releases false}]]
   :plugins [[lein-shadow "0.4.1"]]
-  :dependencies [[org.clojure/clojure "1.12.1"]
+  :dependencies [[org.clojure/clojure "1.12.3"]
                  [org.candelbio/multitool "0.1.12"]
                  [org.clojure/data.json "2.5.1"]
                  [environ "1.2.0"]
@@ -12,14 +12,15 @@
                  [aero "1.1.6"]
 
                  ;; Backend
-                 #_ [clj-http "3.13.0" :exclusions [commons-io]] ; only used for oauth, hato is better
+                 [hato "1.0.0"]         ;replaces clj-http
+                 [cheshire "6.1.0"]    ;necessary for json parse
                  [me.raynes/fs "1.4.6"]
 
-                 [compojure "1.7.1"]
-                 [ring "1.14.1"]
-                 [ring/ring-core "1.14.1"]
-                 [ring/ring-defaults "0.6.0"]
-                 [ring/ring-jetty-adapter "1.14.1"]
+                 [compojure "1.7.2"]
+                 [ring "1.15.3"]
+                 [ring/ring-core "1.15.3"]
+                 [ring/ring-defaults "0.7.0"]
+                 [ring/ring-jetty-adapter "1.15.3"]
                  [ring-basic-authentication "1.2.0"]
                  [ring-logger "1.1.1"]
                  [ring-middleware-format "0.7.5" :exclusions [javax.xml.bind/jaxb-api]]
