@@ -88,6 +88,25 @@
            (rf/dispatch [:fetch data-id params])))
        data))))
 
+;;; TODO ported over from pimento, not really integrated here yet
+;;; Like [:data ] but will be nil during fetch, instead of returning the old data
+(rf/reg-sub
+ :data-valid
+ (fn [db [_ data-id params]]
+   (let [data (get-in db [:data data-id])]
+     (let [status (get-in db [:data-status data-id])
+           last-params (get-in db [:data-params data-id])
+           invalid? (or (nil? data)
+                        (= status :invalid)
+                        (= status :fetching)
+                        (not (= params last-params))
+                        )]
+       (when-not (= status :error)
+         (when invalid?
+           (rf/dispatch [:fetch data-id params])))
+       (when-not invalid?
+         data)))))
+
 ;;; Any adjustments to downloaded data. Called after the data is inserted into db, returns db
 (defmulti postload (fn [db id data] id))
 
