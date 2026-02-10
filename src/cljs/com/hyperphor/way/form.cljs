@@ -102,10 +102,11 @@
   (form-field (assoc args :type :default :value-fn u/coerce-numeric)))
 
 (defmethod form-field :textarea
-  [{:keys [type path label id hidden? disabled? value-fn style] :as args :or {value-fn identity width "100%"}}]
+  [{:keys [type path label id hidden? disabled? focus? value-fn style] :as args :or {value-fn identity width "100%"}}]
   [:textarea.form-control
    {:id id
     :style style
+    :auto-focus focus?                  ;TODO from Pimento.  test, promulagate
     :value @(rf/subscribe [:form-field-value path])
 ;    :disabled false
     :on-change (fn [e]
