@@ -1,11 +1,11 @@
-(defproject com.hyperphor/way "0.1.21" 
+(defproject com.hyperphor/way "0.2.2"
   :description "Way"
   :license {:name "EPL-2.0"
             :url "https://www.eclipse.org/legal/epl-2.0/"}
   :deploy-repositories [["clojars" {:sign-releases false}]]
   :plugins [[lein-shadow "0.4.1"]]
   :dependencies [[org.clojure/clojure "1.12.3"]
-                 [org.candelbio/multitool "0.1.12"]
+                 [com.hyperphor/multitool "0.2.4"]
                  [org.clojure/data.json "2.5.1"]
                  [environ "1.2.0"]
                  [com.taoensso/timbre "6.5.0"]

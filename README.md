@@ -36,8 +36,6 @@ The code to generate clustered heatmaps is actually pretty simple, and lives in 
 - [Vega specification generator](src/cljs/hyperphor/way/cheatmap.cljs)
 - [Clustering](src/cljc/hyperphor/way/cluster.cljc)
 
-A [simple example](src/cljs/hyperphor/way/demo/heatmap.cljs#L167) of use.
-
 ## Demo
 
 See [Demo repo](https://github.com/hyperphor/way-demo)
@@ -51,6 +49,11 @@ lein install
 
 lein deploy clojars
 using Hyperphor token
+
+## Version history
+
+0.2.0 switch to hyperphor.way namespace, reorg code
+0.2.1 add draggable?
 
 ## License
 
