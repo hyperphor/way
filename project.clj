@@ -1,4 +1,4 @@
-(defproject com.hyperphor/way "0.2.2"
+(defproject com.hyperphor/way "0.2.3"
   :description "Way"
   :license {:name "EPL-2.0"
             :url "https://www.eclipse.org/legal/epl-2.0/"}
@@ -24,7 +24,7 @@
                  [ring-basic-authentication "1.2.0"]
                  [ring-logger "1.1.1"]
                  [ring-middleware-format "0.7.5" :exclusions [javax.xml.bind/jaxb-api]]
-                 #_ [ring-oauth2 "0.3.0"]  ;TODO upgraded version, need to verify it works
+                 [ring-oauth2 "0.3.0"]  ;TODO upgraded version, need to verify it works
                  [ring/ring-codec "1.3.0"]
 
                  ;; Data

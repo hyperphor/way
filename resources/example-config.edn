@@ -5,15 +5,15 @@
 {
  ;; Idenitty
  :app-title "Rawsugar"
- :app-main "com.hyperphor.rota.init" ;TODO this is also in project.clj and would be good if we could just read it from there.
+ :app-main "hyperphor.way.init" ;TODO this is also in project.clj and would be good if we could just read it from there.
  :colophon  ["Copyright © " [:a {:href "http://hyperphor.com" :style "color: white;"} "Hyperphor"] " 2020-2024"] ;TODO
 
  ;; Security
  :dev-mode false
  :basic-auth-creds nil                  ;[name pwd]
- :oauth {:client-id "549802309065-ob55bl04u176naebr4qtqt18oku8tk4b.apps.googleusercontent.com"
+ :oauth {:client-id #env "OAUTH_CLIENT_ID"
          :client-secret #env "OAUTH_CLIENT_SECRET"
-         :callback "https://rota.hyperphor.com/oauth2/google/callback"
+         :callback #env "OAUTH_CALLBACK"
          }
 
  ;; Customization

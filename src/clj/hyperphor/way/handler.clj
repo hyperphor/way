@@ -6,7 +6,7 @@
             [ring.middleware.basic-authentication :refer [wrap-basic-authentication]]
             [hyperphor.multitool.core :as u]
             [hyperphor.multitool.cljcore :as ju]
-            #_ [hyperphor.way.oauth :as oauth]
+            [hyperphor.way.oauth :as oauth]
             [hyperphor.way.views.html :as html]
             [hyperphor.way.views.admin :as admin]
             [hyperphor.way.views.login :as login]
@@ -49,13 +49,19 @@
     (apply html/html-frame-spa args))
    "text/html"))
 
+(defn oauth?
+  []
+  (config/config :oauth))
+
 (defroutes base-site-routes
   (GET "/health" []                     ;TODO exclude from log, see /opt/mt/repos/dotfiles/.m2/repository/ring-logger/ring-logger/1.1.1/logger.clj
     (response/content-type
      {:status 200
       :body "I'm good"}
      "text/plain"))
-  (GET "/login" [] (login/login-view)) ;TODO only if OAuth configured
+  (GET "/login" [] (if (oauth?)
+                     (login/login-view)
+                     (response/not-found "Not found")))
   (GET "/authenticated" req           ;on mgen, its /callback or somesuch
     (let [original-page (get-in req [:cookies "way_landing" :value])] ;TODO
       (response/redirect (if (empty? original-page) "/" original-page))))
@@ -82,7 +88,7 @@
 (defn wrap-bind-request
   [handler]
   (fn [request]
-    (binding [request/*request* request]
+    (binding [*request* request]
       (handler request))))
 
 ;;; Weird that this isn't a standard part of ring
@@ -138,13 +144,19 @@
 
 (def log-exclude #{"/health"})
 
+(defn wrap-if
+  [route cond wrapper]
+  (if cond
+    (wrapper route)
+    route))
+
 (defn site-routes
   [app-site-routes]
   (-> (routes app-site-routes base-site-routes)
       wrap-bind-request
       (wrap-restful-response)
 
-      #_ (oauth/wrap-oauth)
+      (wrap-if (oauth?) oauth/wrap-oauth)
 
       ;; TODO isn't this redundant with middleware-site-defaults?
       (resource/wrap-resource "public" {:allow-symlinks? true}) ;allow symlinks in static dir
@@ -223,7 +235,7 @@
 (defn wrap-basic-authentication-except
   [base]
   (fn [request]
-    (if false #_ (oauth/open-uri? (:uri request))
+    (if (oauth/open-uri? (:uri request)) ;reusing oauth list here
       (base request)
       ((wrap-basic-authentication base authenticated?) request))))
 
@@ -239,11 +251,7 @@
             :else
             (handler req)))))
 
-(defn wrap-if
-  [route cond wrapper]
-  (if cond
-    (wrapper route)
-    route))
+
 
 (defn app
   [app-site-routes app-api-routes]

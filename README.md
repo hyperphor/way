@@ -38,7 +38,7 @@ The code to generate clustered heatmaps is actually pretty simple, and lives in 
 
 ## Demo
 
-See [Demo repo](https://github.com/hyperphor/way-demo)
+See [Demo repo](https://github.com/mtravers/way-demo)
 
 ## Deploy
 
@@ -57,7 +57,7 @@ using Hyperphor token
 
 ## License
 
-Copyright © 2020-25 Hyperphor
+Copyright © 2020-24 Hyperphor
 
 This program and the accompanying materials are made available under the
 terms of the Eclipse Public License 2.0 which is available at
