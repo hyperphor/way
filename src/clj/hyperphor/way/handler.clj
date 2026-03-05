@@ -77,6 +77,14 @@
     (binding [*read-eval* false]
       (handler request))))
 
+(def ^:dynamic *request* nil)           ;Holds the http request object
+
+(defn wrap-bind-request
+  [handler]
+  (fn [request]
+    (binding [request/*request* request]
+      (handler request))))
+
 ;;; Weird that this isn't a standard part of ring
 (defn wrap-exception-handling
   [handler]
@@ -133,6 +141,7 @@
 (defn site-routes
   [app-site-routes]
   (-> (routes app-site-routes base-site-routes)
+      wrap-bind-request
       (wrap-restful-response)
 
       #_ (oauth/wrap-oauth)
