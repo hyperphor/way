@@ -115,17 +115,32 @@
 
 (defn wrap-oauth
   [handler]
-  (if (config/config :oauth :client-id)
-    (-> handler
-        (wrap-enforce-login (fn [req]
-                              (response/set-cookie
-                               (response/redirect "/login")
-                               "way_landing" 
-                               (:uri req) ;TODO this leaves out query params, see enflame for better way
-                               {:same-site :lax :path "/"}
-                               )))
-        wrap-jwt                                  ;has to come before (that is, after) wrap-oauth2
-        (wrap-oauth2 (oauth2-params))
-        wrap-oauth-code
-        )
-    handler))
+  (-> handler
+      (wrap-enforce-login (fn [req]
+                            (response/set-cookie
+                             (response/redirect "/login")
+                             "way_landing" 
+                             (:uri req) ;TODO this leaves out query params, see enflame for better way
+                             {:same-site :lax :path "/"}
+                             )))
+      wrap-jwt                                  ;has to come before (that is, after) wrap-oauth2
+      (wrap-oauth2 (oauth2-params))
+      wrap-oauth-code
+      ))
+
+(defn wrap-get-login
+  [handler]
+  (fn [request]
+    (let [oauth-email (get-in request [:oauth2/claims :email])] ;TODO removed config option here, I don't remember what it was used for...
+      (if oauth-email                 ; This request is supplying identity (or simulation thereof)
+        (handler (assoc-in request [:login :email] oauth-email)) ; add info to request
+        (response/bad-request "Unauthorized")))))
+
+(defn wrap-oauth-api
+  [handler]
+  (-> handler
+      wrap-get-login
+      wrap-jwt                                  ;has to come before (that is, after) wrap-oauth2
+      (wrap-oauth2 (oauth2-params))
+      wrap-oauth-code
+      ))

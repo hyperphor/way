@@ -88,8 +88,16 @@
 (defn wrap-bind-request
   [handler]
   (fn [request]
-    (binding [*request* request]
+      (binding [*request* request]
+        (handler request))))
+
+(defn wrap-bind-user
+  [handler]
+  (fn [request]
+    (prn :wrap-bind-user (get-in request [:login :email])) ;TEMP
+    (config/with-user (get-in request [:login :email])
       (handler request))))
+
 
 ;;; Weird that this isn't a standard part of ring
 (defn wrap-exception-handling
@@ -153,9 +161,11 @@
 (defn site-routes
   [app-site-routes]
   (-> (routes app-site-routes base-site-routes)
+
       wrap-bind-request
       (wrap-restful-response)
 
+      wrap-bind-user
       (wrap-if (oauth?) oauth/wrap-oauth)
 
       ;; TODO isn't this redundant with middleware-site-defaults?
@@ -201,7 +211,7 @@
 (defroutes base-api-routes  
   (context api-base []
     (GET "/config" _                    ;TODO try to build config into compiled js and eliminate this
-      (content-response (config/config)))
+      (content-response (config/config-safe)))
     (GET "/data" req                    ;params include data-id and other
       (content-response (data/data (:params req))))
     (GET "/exec" [id query]
@@ -223,6 +233,9 @@
   [app-api-routes]
   (-> (routes app-api-routes base-api-routes)
       (middleware/wrap-defaults api-defaults)
+      ;; UNTESTED (Not working)
+      wrap-bind-user                      
+      (wrap-if (oauth?) oauth/wrap-oauth-api) ;TODO for API, should probably not redirect
       wrap-no-read-eval
       wrap-api-exception-handling
       (logger/wrap-with-logger          ;hook Ring logger to Timbre

@@ -1,6 +1,7 @@
 (ns hyperphor.way.ui.config
   (:require [hyperphor.way.api :as api]))
 
+;;; TODO not sure why this isn't in react db – guess it doesn't change. Now includeds :user
 (def the-config (atom nil))
 
 (defn init

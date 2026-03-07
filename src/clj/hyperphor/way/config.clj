@@ -37,4 +37,18 @@
   (get-in @the-config atts))
 
 
+(def security-fields
+  [:basic-auth-creds
+   :oauth])
 
+(def ^:dynamic *user* nil)
+
+(defmacro with-user
+  [user & body]
+  `(binding [*user* ~user]
+     ~@body))
+
+(defn config-safe
+  []
+  (-> (apply dissoc @the-config security-fields)
+      (assoc :user *user*)))
